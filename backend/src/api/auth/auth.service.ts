@@ -23,8 +23,13 @@ class AuthService {
   }
 
   async createAuth(data: registerSchema) {
+    const { name, email, password } = data;
     return await prisma.user.create({
-      data,
+      data: {
+        name,
+        email,
+        password_hash: password,
+      },
     });
   }
 }
