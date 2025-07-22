@@ -15,6 +15,8 @@ export const errorHandler = (
   console.log(err);
 
   if (err instanceof Joi.ValidationError) {
+    console.log(err);
+
     res.status(400).json({
       message: err.details[0].message,
     });
