@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import {
   sendErrorResponse,
   sendSuccessResponse,
-} from '../../utils/statusResponse';
+} from '../../common/utils/statusResponse';
 
 class authController {
   async registerUser(req: Request, res: Response, next: NextFunction) {
@@ -50,7 +50,7 @@ class authController {
       if (!isPasswordValid)
         return sendErrorResponse(res, 'Wrong Email or Password', 404);
 
-      const token = jwt.sign({ userId: user.id }, jwtSecretKey, {
+      const token = jwt.sign({ id: user.id }, jwtSecretKey, {
         expiresIn: '1d',
       });
 
