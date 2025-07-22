@@ -27,6 +27,6 @@ export const authCheck = (req: Request, res: Response, next: NextFunction) => {
     (req as any).user = decodedToken;
     next();
   } catch (error) {
-    return sendErrorResponse(res, 'Unauthorized', 401);
+    return sendErrorResponse(res, 'Unauthorized!', 401);
   }
 };

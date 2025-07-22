@@ -2,7 +2,7 @@
 
 import Joi from 'joi';
 
-export const createWorkoutsDTO = Joi.object({
+export const WorkoutDTO = Joi.object({
   exercise_name: Joi.string().max(100).required().messages({
     'any.required': 'Exercise Name is required',
     'string.max': 'Exercise Name must be less than or equal to 100 characters',
@@ -24,6 +24,4 @@ export const createWorkoutsDTO = Joi.object({
   date: Joi.date().required().messages({ 'any.required': 'Date is required' }),
 });
 
-export type WorkoutSchema = ReturnType<
-  typeof createWorkoutsDTO.validate
->['value'];
+export type WorkoutSchema = ReturnType<typeof WorkoutDTO.validate>['value'];

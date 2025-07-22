@@ -11,13 +11,13 @@ export const sendErrorResponse = (
 export const sendSuccessResponse = <T>(
   res: Response,
   message: string,
-  data?: T,
+  response?: T,
   statusCode: number = 200,
 ) => {
-  if (data !== undefined && data !== null) {
+  if (response !== undefined && response !== null) {
     return res.status(statusCode).json({
       message,
-      data,
+      response,
     });
   }
 
