@@ -3,6 +3,10 @@ import { NextFunction, Request, Response } from 'express';
 import { AuthDTO, createAuthDTO, registerSchema } from './auth.model';
 import { authService } from './auth.service';
 import jwt from 'jsonwebtoken';
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from '../../utils/statusResponse';
 
 class authController {
   async registerUser(req: Request, res: Response, next: NextFunction) {
@@ -10,12 +14,13 @@ class authController {
       const body = await createAuthDTO.validateAsync(req.body);
 
       const existingUser = await authService.findByEmail(body.email);
-      if (existingUser) {
-        res
-          .status(409)
-          .json({ message: 'Email already exists, please use another email.' });
-        return;
-      }
+
+      if (existingUser)
+        return sendErrorResponse(
+          res,
+          'Email already exists, please use another email.',
+          409,
+        );
 
       const hashedPassword = await bcrypt.hash(body.password, 10);
       const data: registerSchema = {
@@ -23,10 +28,8 @@ class authController {
         password: hashedPassword,
       };
 
-      const createdUser = await authService.createAuth(data);
-      res
-        .status(200)
-        .json({ message: 'User created successfully', data: createdUser });
+      await authService.createAuth(data);
+      sendSuccessResponse(res, 'Login successful');
     } catch (error) {
       next(error);
     }
@@ -36,28 +39,22 @@ class authController {
       const jwtSecretKey = process.env.JWT_SECRET_KEY || '';
       const { email, password } = await AuthDTO.validateAsync(req.body);
 
-      const sendErrorResponse = (message: string) => {
-        res.status(404).json({ message });
-        return;
-      };
-
       const user = await authService.findByEmail(email);
-      if (!user) return sendErrorResponse('Wrong Email or Password');
+      if (!user) return sendErrorResponse(res, 'Wrong Email or Password', 404);
 
       const isPasswordValid = await bcrypt.compare(
         password,
         user.password_hash,
       );
 
-      if (!isPasswordValid) return sendErrorResponse('Wrong Email or Password');
+      if (!isPasswordValid)
+        return sendErrorResponse(res, 'Wrong Email or Password', 404);
 
       const token = jwt.sign({ userId: user.id }, jwtSecretKey, {
         expiresIn: '1d',
       });
 
-      res.status(200).json({
-        token,
-      });
+      sendSuccessResponse(res, 'Login successful', { token });
     } catch (error) {
       next(error);
     }
