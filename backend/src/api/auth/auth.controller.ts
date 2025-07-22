@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import {
   sendErrorResponse,
   sendSuccessResponse,
-} from '../../utils/statusResponse';
+} from '../../common/utils/statusResponse';
 
 class authController {
   async registerUser(req: Request, res: Response, next: NextFunction) {

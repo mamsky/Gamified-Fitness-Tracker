@@ -1,4 +1,4 @@
-import { prisma } from '../../utils/prisma.utils.';
+import { prisma } from '../../common/utils/prisma.utils.';
 import { registerSchema } from './auth.model';
 
 class AuthService {
