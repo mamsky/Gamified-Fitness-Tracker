@@ -50,7 +50,7 @@ class authController {
       if (!isPasswordValid)
         return sendErrorResponse(res, 'Wrong Email or Password', 404);
 
-      const token = jwt.sign({ userId: user.id }, jwtSecretKey, {
+      const token = jwt.sign({ id: user.id }, jwtSecretKey, {
         expiresIn: '1d',
       });
 
