@@ -3,7 +3,8 @@ import Link from "next/link";
 import { RegisterForm } from "./hook/registerForm";
 
 const RegisterPage = () => {
-  const { handleSubmit, register, errors, onSubmit } = RegisterForm();
+  const { handleSubmit, register, errors, onSubmit, isPending } =
+    RegisterForm();
   return (
     <div
       className="w-full h-screen flex justify-center items-center bg-cover bg-center p-4"
@@ -66,10 +67,13 @@ const RegisterPage = () => {
         </div>
 
         <button
+          disabled={isPending}
           onClick={handleSubmit(onSubmit)}
-          className="p-2 my-2 w-full cursor-pointer bg-indigo-600 rounded-lg text-xl text-white font-semibold transition-all hover:bg-indigo-700 active:bg-indigo-800"
+          className={`p-2 w-full cursor-pointer my-2 ${
+            isPending ? "bg-gray-600" : "bg-indigo-600 hover:bg-indigo-700"
+          } rounded-lg text-xl text-white font-semibold transition-all  active:bg-indigo-800`}
         >
-          Register
+          {isPending ? "Loading..." : "Register"}
         </button>
 
         <p className="text-sm text-center text-white/70">
