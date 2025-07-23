@@ -24,7 +24,7 @@ const LogoutButton = () => {
     <div className="relative">
       <button
         onClick={openModal}
-        className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300 cursor-pointer"
+        className="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg w-full cursor-pointer"
       >
         Logout
       </button>

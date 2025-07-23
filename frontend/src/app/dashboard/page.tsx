@@ -1,18 +1,12 @@
 "use client";
-import Link from "next/link";
+import { useState } from "react";
+import LevelTracker from "./level-tracker";
 import LogoutButton from "./logout-button";
+import WorkoutLogs from "./workout-logs";
+import Link from "next/link";
 
 const DashboardPage = () => {
-  const xp = 1200;
-  const level = 3;
-  const progress = 46;
-
-  const workoutLogs = [
-    { name: "Running", duration: "45 mins" },
-    { name: "Push-ups", duration: "30 reps" },
-    { name: "Yoga", duration: "30 mins" },
-  ];
-
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div
       className="bg-cover bg-center min-h-screen p-2 flex justify-center items-center"
@@ -24,58 +18,36 @@ const DashboardPage = () => {
             Dashboard
           </div>
           <div className="font-bold mb-6 text-center">
-            <LogoutButton />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/30 bg-opacity-20 backdrop-blur-xl p-6 rounded-lg shadow-xl text-center">
-            <h3 className="text-xl font-semibold">XP</h3>
-            <p className="text-2xl sm:text-3xl font-bold">{xp}</p>
-          </div>
-
-          <div className="bg-white/30 bg-opacity-20 backdrop-blur-xl p-6 rounded-lg shadow-xl text-center">
-            <h3 className="text-xl font-semibold">Level</h3>
-            <p className="text-2xl sm:text-3xl font-bold">{level}</p>
-          </div>
-
-          <div className="bg-white/30 bg-opacity-20 backdrop-blur-xl p-6 rounded-lg shadow-xl text-center">
-            <h3 className="text-xl font-semibold">Progress</h3>
-            <div className="w-full h-2 bg-gray-200 rounded-full mt-2">
-              <div
-                className="h-full bg-cyan-500 rounded-full"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <p className="text-lg sm:text-xl font-bold mt-2">{progress}%</p>
-          </div>
-        </div>
-
-        <div className="bg-white/30 bg-opacity-20 backdrop-blur-xl p-6 rounded-lg shadow-xl mb-6">
-          <div className="flex justify-between items-center my-2">
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-black mb-4">
-              Recent Workout Logs
-            </h3>
-            <Link
-              href={"/workouts/create"}
-              className="py-1.5 px-3.5 text-2xl sm:text-3xl md:text-4xl cursor-pointer bg-white/30 font-semibold rounded-xl shadow-2xl hover:bg-white/80 transition duration-300"
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="px-4 py-2 bg-white/50 backdrop-blur-md rounded-lg hover:bg-gray-400 focus:outline-none cursor-pointer"
             >
-              +
-            </Link>
-          </div>
+              Menu
+            </button>
 
-          <ul className="space-y-4">
-            {workoutLogs.map((log, index) => (
-              <li
-                key={index}
-                className="flex justify-between text-black text-sm sm:text-base"
-              >
-                <span>{log.name}</span>
-                <span>{log.duration}</span>
-              </li>
-            ))}
-          </ul>
+            {isOpen && (
+              <div className="absolute z-10 right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href="/workouts"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg"
+                    >
+                      Workout
+                    </Link>
+                  </li>
+                  <li>
+                    <LogoutButton />
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
+
+        <LevelTracker />
+
+        <WorkoutLogs />
       </div>
     </div>
   );
