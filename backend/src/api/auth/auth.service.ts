@@ -11,6 +11,7 @@ class AuthService {
       where: {
         id,
       },
+      omit: { password_hash: true },
     });
   }
 
