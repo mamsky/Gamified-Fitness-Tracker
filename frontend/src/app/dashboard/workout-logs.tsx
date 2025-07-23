@@ -19,20 +19,27 @@ const WorkoutLogs = () => {
           +
         </Link>
       </div>
-
-      {isPending && <SkeletonWorkout />}
-
-      <ul className="space-y-4">
-        {workoutLog?.map((log, index) => (
-          <li
-            key={index}
-            className="flex justify-between text-black text-sm sm:text-base"
-          >
-            <span>{log.exercise_name}</span>
-            <span>{log.duration} Minutes</span>
-          </li>
-        ))}
-      </ul>
+      {isPending ? (
+        <SkeletonWorkout />
+      ) : (
+        <ul className="space-y-4">
+          {workoutLog && workoutLog?.length > 0 ? (
+            workoutLog.map((log, index) => (
+              <li
+                key={index}
+                className="flex justify-between text-black text-sm sm:text-base"
+              >
+                <span>{log.exercise_name}</span>
+                <span>{log.duration} Minutes</span>
+              </li>
+            ))
+          ) : (
+            <li className="text-center text-gray-500 text-sm sm:text-base">
+              No training records found for today.
+            </li>
+          )}
+        </ul>
+      )}
     </div>
   );
 };

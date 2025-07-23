@@ -1,35 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFetchWorkout } from "./hook/useFetchWorkout";
+import { WorkoutDTO } from "./DTO/workoutDTO";
+import SkeletonWorkout from "../dashboard/skeleton";
+import Link from "next/link";
 
 const WorkoutsPage = () => {
-  const workoutHistory = [
-    { name: "Running", date: "2025-07-20", duration: "45 mins" },
-    { name: "Push-ups", date: "2025-07-19", duration: "30 reps" },
-    { name: "Yoga", date: "2025-07-18", duration: "30 mins" },
-    { name: "Cycling", date: "2025-07-15", duration: "60 mins" },
-    { name: "Swimming", date: "2025-07-10", duration: "40 mins" },
-  ];
-
+  const { data, isPending } = useFetchWorkout();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [filteredWorkouts, setFilteredWorkouts] = useState(workoutHistory);
+  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutDTO[]>(data!);
 
   const handleFilterChange = () => {
-    let filtered = workoutHistory;
+    let filtered = data;
 
     if (startDate) {
-      filtered = filtered.filter(
+      filtered = filtered?.filter(
         (workout) => new Date(workout.date) >= new Date(startDate)
       );
     }
+
     if (endDate) {
-      filtered = filtered.filter(
+      filtered = filtered?.filter(
         (workout) => new Date(workout.date) <= new Date(endDate)
       );
     }
 
-    setFilteredWorkouts(filtered);
+    setFilteredWorkouts(filtered!);
   };
+
+  useEffect(() => {
+    if (!startDate || !endDate) {
+      setFilteredWorkouts(data!);
+    }
+  }, [data, startDate, endDate]);
 
   return (
     <div
@@ -37,8 +41,26 @@ const WorkoutsPage = () => {
       style={{ backgroundImage: "url('/images/bg.png')" }}
     >
       <div className="max-w-4xl w-full p-6 bg-white/30 bg-opacity-10 backdrop-blur-3xl rounded-lg shadow-xl">
-        <div className="text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
-          Workout History
+        <div className="flex justify-between ">
+          <Link href={"/dashboard"} className="h-8 w-8">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+              />
+            </svg>
+          </Link>
+          <div className="flex-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
+            Workout History
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:justify-between mb-6">
@@ -71,7 +93,7 @@ const WorkoutsPage = () => {
         <div className="flex justify-center mb-6">
           <button
             onClick={handleFilterChange}
-            className="px-6 py-3 bg-blue-500  font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+            className="px-6 py-3 bg-blue-500 text-white cursor-pointer font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
           >
             Filter
           </button>
@@ -79,19 +101,19 @@ const WorkoutsPage = () => {
 
         <div className="bg-white/30 bg-opacity-20 backdrop-blur-xl p-6 rounded-lg shadow-xl mb-6">
           <h3 className="text-xl sm:text-2xl font-semibold  mb-4">
-            Recent Workout Logs
+            Workout History
           </h3>
           <ul className="space-y-4">
-            {filteredWorkouts.length > 0 ? (
+            {isPending ? (
+              <SkeletonWorkout />
+            ) : filteredWorkouts && filteredWorkouts.length > 0 ? (
               filteredWorkouts.map((log, index) => (
                 <li
                   key={index}
                   className="flex justify-between  text-sm sm:text-base"
                 >
-                  <span>{log.name}</span>
-                  <span>
-                    {log.date} - {log.duration}
-                  </span>
+                  <span>{log.exercise_name}</span>
+                  <span>{log.duration} Minutes</span>
                 </li>
               ))
             ) : (
