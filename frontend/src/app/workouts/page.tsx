@@ -61,28 +61,36 @@ const WorkoutsPage = () => {
           <h3 className="text-xl sm:text-2xl font-semibold  mb-4">
             Workout History
           </h3>
-          <ul className="space-y-4">
-            {isPending ? (
-              <SkeletonWorkout />
-            ) : filteredWorkouts && filteredWorkouts.length > 0 ? (
-              filteredWorkouts.map((log, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between  text-sm sm:text-base"
-                >
-                  <span>{log.exercise_name}</span>
-                  <span className="flex gap-4">
-                    {log.duration} Minutes{" "}
-                    <DropdownWorkout id={log.id} data={log} />
-                  </span>
+          <div
+            className={`${
+              filteredWorkouts && filteredWorkouts.length > 6
+                ? "max-h-[30vh] overflow-y-scroll"
+                : ""
+            }`}
+          >
+            <ul className="space-y-4">
+              {isPending ? (
+                <SkeletonWorkout />
+              ) : filteredWorkouts && filteredWorkouts.length > 0 ? (
+                filteredWorkouts.map((log, index) => (
+                  <li
+                    key={index}
+                    className="flex flex-col md:flex-row md:justify-between  text-sm sm:text-base"
+                  >
+                    <span>{log.exercise_name}</span>
+                    <span className="flex gap-4">
+                      {log.date.split("T")[0]} - {log.duration} Minutes{" "}
+                      <DropdownWorkout id={log.id} data={log} />
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className="">
+                  No workouts found for the selected date range.
                 </li>
-              ))
-            ) : (
-              <li className="">
-                No workouts found for the selected date range.
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

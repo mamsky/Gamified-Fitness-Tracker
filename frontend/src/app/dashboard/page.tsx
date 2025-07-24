@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const DashboardPage = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const date = new Date();
   return (
     <div
       className="bg-cover bg-center min-h-screen p-2 flex justify-center items-center"
@@ -15,7 +16,10 @@ const DashboardPage = () => {
       <div className="max-w-4xl w-full p-6 bg-white/30 bg-opacity-10 backdrop-blur-3xl rounded-lg shadow-xl">
         <div className="flex justify-between">
           <div className="text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
-            Dashboard
+            <h1>Dashboard</h1>
+            <p className="text-xs text-left text-black">
+              {date.toISOString().slice(0, 10)}
+            </p>
           </div>
           <div className="font-bold mb-6 text-center">
             <button
