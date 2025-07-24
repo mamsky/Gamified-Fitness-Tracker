@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎮 Gamified Fitness Tracker – Frontend
 
-## Getting Started
+Ini adalah **frontend** untuk aplikasi **Gamified Fitness Tracker** — platform pelacakan kebugaran yang menyenangkan dan memotivasi. Aplikasi ini memungkinkan pengguna mencatat latihan, mendapatkan XP, naik level, dan memantau kemajuan kebugaran mereka secara real-time.
 
-First, run the development server:
+Dibangun menggunakan **Next.js** dan **TypeScript**, aplikasi ini didesain modular dan terintegrasi penuh dengan **React Hook Form**, **Zod**, dan **TanStack Query** untuk pengalaman pengguna yang cepat dan responsif.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Fitur Utama
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Autentikasi (Register & Login)
+- Workout Logging: Tambah, edit, hapus, lihat
+- Tampilan Progress, XP dan level
+- Fetch data efisien dengan React Query
+- Manajemen token dengan cookie
+- Toaster notifikasi untuk feedback UI
+- Responsive UI
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Technology           | Description                         |
+| -------------------- | ----------------------------------- |
+| Next.js              | Framework React dengan SSR          |
+| TypeScript           | Bahasa JavaScript bertipe statis    |
+| Tailwind CSS         | CSS utility-first untuk styling     |
+| React Hook Form      | Form management dan validasi        |
+| Zod                  | Validasi skema data                 |
+| TanStack React Query | Manajemen query                     |
+| Axios                | HTTP client untuk API request       |
+| js-cookie            | Manajemen cookie browser            |
+| react-hot-toast      | Notifikasi toast ringan dan stylish |
+| Tailwind CSS         | Styling berbasis utility className  |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🗺️ Frontend Routing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Berikut adalah struktur routing halaman pada aplikasi frontend:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ✅ **Frontend Pages**
+
+| Route              | Deskripsi                                          |
+| ------------------ | -------------------------------------------------- |
+| `/login`           | Halaman login untuk pengguna masuk ke sistem.      |
+| `/register`        | Halaman pendaftaran untuk pengguna baru.           |
+| `/dashboard`       | Tampilan utama berisi:                             |
+|                    | - XP saat ini                                      |
+|                    | - Level pengguna                                   |
+|                    | - Progress bar ke level berikutnya                 |
+|                    | - Ringkasan log workout untuk **tanggal hari ini** |
+|                    | - Tombol untuk menambahkan workout baru            |
+| `/workouts`        | Menampilkan riwayat lengkap workout pengguna.      |
+|                    | Dapat difilter berdasarkan tanggal.                |
+| `/workouts/create` | Form untuk menambahkan workout baru.               |
+
+> Semua halaman dilindungi dan hanya dapat diakses jika pengguna sudah login (authenticated route).
+
+---
