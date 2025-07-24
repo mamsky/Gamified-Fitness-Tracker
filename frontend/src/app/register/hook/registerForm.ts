@@ -1,12 +1,11 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerDTO, registerSchemaDTO } from "../DTO/registerDTO";
-import { useMutation } from "@tanstack/react-query";
 import { api } from "@/utils/api";
-import toast from "react-hot-toast";
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import { redirect } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { registerDTO, registerSchemaDTO } from "../DTO/registerDTO";
 
 type RegisterResponse = {
   message: string;

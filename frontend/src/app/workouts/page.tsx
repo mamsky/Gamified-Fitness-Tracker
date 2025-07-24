@@ -1,15 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useFetchWorkout } from "./hook/useFetchWorkout";
-import { WorkoutDTO } from "./DTO/workoutDTO";
-import SkeletonWorkout from "../dashboard/skeleton";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import SkeletonWorkout from "../dashboard/skeleton";
+import { WorkoutDTOS } from "./DTO/workoutDTO";
+import { useFetchWorkout } from "./hook/useFetchWorkout";
+import DropdownWorkout from "./dropdown-workout";
+import Image from "next/image";
 
 const WorkoutsPage = () => {
   const { data, isPending } = useFetchWorkout();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutDTO[]>(data!);
+  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutDTOS[]>(
+    data!
+  );
 
   const handleFilterChange = () => {
     let filtered = data;
@@ -43,7 +47,7 @@ const WorkoutsPage = () => {
       <div className="max-w-4xl w-full p-6 bg-white/30 bg-opacity-10 backdrop-blur-3xl rounded-lg shadow-xl">
         <div className="flex justify-between ">
           <Link href={"/dashboard"} className="h-8 w-8">
-            <img src="arrow.svg" alt="arrow left" />
+            <Image src="arrow.svg" alt="arrow left" width={32} height={0} />
           </Link>
           <div className="flex-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
             Workout History
@@ -100,7 +104,9 @@ const WorkoutsPage = () => {
                   className="flex justify-between  text-sm sm:text-base"
                 >
                   <span>{log.exercise_name}</span>
-                  <span>{log.duration} Minutes</span>
+                  <span className="flex gap-4">
+                    {log.duration} Minutes <DropdownWorkout id={log.id} />
+                  </span>
                 </li>
               ))
             ) : (
