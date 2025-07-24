@@ -1,7 +1,7 @@
 import z from "zod";
 
 export type WorkoutDTOS = {
-  id: number;
+  id?: number;
   exercise_name: string;
   duration: number;
   calories_burned: number;
@@ -18,3 +18,18 @@ export const WorkoutDTOSchema = z.object({
 });
 
 export type WorkoutDTO = z.infer<typeof WorkoutDTOSchema>;
+
+export const EditWorkoutDTOSchema = z.object({
+  exercise_name: z.string().min(1, "Exercise name is required"),
+  duration: z.number().positive("Duration must be a positive number"),
+  calories_burned: z
+    .number()
+    .positive("Calories burned must be a positive number"),
+  date: z
+    .string()
+    .refine((val) => val <= new Date().toISOString().split("T")[0], {
+      message: "Date cannot be in the future",
+    }),
+});
+
+export type EditWorkoutDTO = z.infer<typeof EditWorkoutDTOSchema>;

@@ -1,44 +1,13 @@
 "use client";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import SkeletonWorkout from "../dashboard/skeleton";
-import { WorkoutDTOS } from "./DTO/workoutDTO";
-import { useFetchWorkout } from "./hook/useFetchWorkout";
-import DropdownWorkout from "./dropdown-workout";
 import Image from "next/image";
+import Link from "next/link";
+import SkeletonWorkout from "../dashboard/skeleton";
+import DropdownWorkout from "./dropdown-workout";
+import { useFilterData } from "./hook/useFilterData";
 
 const WorkoutsPage = () => {
-  const { data, isPending } = useFetchWorkout();
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutDTOS[]>(
-    data!
-  );
-
-  const handleFilterChange = () => {
-    let filtered = data;
-
-    if (startDate) {
-      filtered = filtered?.filter(
-        (workout) => new Date(workout.date) >= new Date(startDate)
-      );
-    }
-
-    if (endDate) {
-      filtered = filtered?.filter(
-        (workout) => new Date(workout.date) <= new Date(endDate)
-      );
-    }
-
-    setFilteredWorkouts(filtered!);
-  };
-
-  useEffect(() => {
-    if (!startDate || !endDate) {
-      setFilteredWorkouts(data!);
-    }
-  }, [data, startDate, endDate]);
-
+  const { register, filteredWorkouts, handleSubmit, isPending, onSubmit } =
+    useFilterData();
   return (
     <div
       className="bg-cover bg-center min-h-screen flex justify-center p-2 text-black items-center"
@@ -62,8 +31,7 @@ const WorkoutsPage = () => {
             <input
               type="date"
               id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              {...register("startDate")}
               className="w-full mt-2 p-3 rounded-lg bg-white/30 bg-opacity-20  border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -74,8 +42,7 @@ const WorkoutsPage = () => {
             <input
               type="date"
               id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              {...register("endDate")}
               className="w-full mt-2 p-3 rounded-lg bg-white/30 bg-opacity-20  border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -83,7 +50,7 @@ const WorkoutsPage = () => {
 
         <div className="flex justify-center mb-6">
           <button
-            onClick={handleFilterChange}
+            onClick={handleSubmit(onSubmit)}
             className="px-6 py-3 bg-blue-500 text-white cursor-pointer font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
           >
             Filter
@@ -94,27 +61,36 @@ const WorkoutsPage = () => {
           <h3 className="text-xl sm:text-2xl font-semibold  mb-4">
             Workout History
           </h3>
-          <ul className="space-y-4">
-            {isPending ? (
-              <SkeletonWorkout />
-            ) : filteredWorkouts && filteredWorkouts.length > 0 ? (
-              filteredWorkouts.map((log, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between  text-sm sm:text-base"
-                >
-                  <span>{log.exercise_name}</span>
-                  <span className="flex gap-4">
-                    {log.duration} Minutes <DropdownWorkout id={log.id} />
-                  </span>
+          <div
+            className={`${
+              filteredWorkouts && filteredWorkouts.length > 6
+                ? "max-h-[30vh] overflow-y-scroll"
+                : ""
+            }`}
+          >
+            <ul className="space-y-4">
+              {isPending ? (
+                <SkeletonWorkout />
+              ) : filteredWorkouts && filteredWorkouts.length > 0 ? (
+                filteredWorkouts.map((log, index) => (
+                  <li
+                    key={index}
+                    className="flex flex-col md:flex-row md:justify-between  text-sm sm:text-base"
+                  >
+                    <span>{log.exercise_name}</span>
+                    <span className="flex gap-4">
+                      {log.date.split("T")[0]} - {log.duration} Minutes{" "}
+                      <DropdownWorkout id={log.id} data={log} />
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className="">
+                  No workouts found for the selected date range.
                 </li>
-              ))
-            ) : (
-              <li className="">
-                No workouts found for the selected date range.
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

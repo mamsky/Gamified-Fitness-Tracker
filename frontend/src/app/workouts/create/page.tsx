@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCreateWorkout } from "../hook/useCreateWorkout";
+import Image from "next/image";
 
 const CreateWorkout = () => {
   const { errors, handleSubmit, isPending, onSubmit, register } =
@@ -14,7 +15,7 @@ const CreateWorkout = () => {
       <div className="max-w-4xl w-full p-6 bg-white/30 bg-opacity-10 backdrop-blur-3xl rounded-lg shadow-xl">
         <div className="flex justify-between ">
           <Link href={"/dashboard"} className="h-8 w-8">
-            <img src="../arrow.svg" alt="arrow left" />
+            <Image src="../arrow.svg" alt="arrow left" width={32} height={32} />
           </Link>
           <div className="flex-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
             Add New Workout

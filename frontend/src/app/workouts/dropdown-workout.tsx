@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDeleteWorkout } from "./hook/useDeleteWorkout";
-import { WorkoutDTOS } from "./DTO/workoutDTO";
+import { EditWorkoutDTO, WorkoutDTOS } from "./DTO/workoutDTO";
+import { useEditWorkout } from "./hook/useEditWorkout";
 
 interface PropsState {
   id?: number;
@@ -81,7 +82,15 @@ const DeleteWorkout = ({ id, setIsOpen }: PropsState) => {
 };
 
 const EditWorkout = ({ data, setIsOpen }: PropsState) => {
+  const { register, handleSubmit, errors, mutateAsync, isPending } =
+    useEditWorkout(data!);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const onSubmit = async (data: EditWorkoutDTO) => {
+    await mutateAsync(data);
+    setIsModalOpen(false);
+    setIsOpen!(false);
+  };
 
   return (
     <>
@@ -111,10 +120,15 @@ const EditWorkout = ({ data, setIsOpen }: PropsState) => {
                     <input
                       type="text"
                       id="exercise_name"
-                      defaultValue={data?.calories_burned}
+                      {...register("exercise_name")}
                       className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Exercise name (eg: Deadlift, Plank, Push-up)"
                     />
+                    {errors.exercise_name && (
+                      <p className="text-red-500">
+                        {errors.exercise_name.message}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full">
                     <label
@@ -126,9 +140,13 @@ const EditWorkout = ({ data, setIsOpen }: PropsState) => {
                     <input
                       type="number"
                       id="duration"
+                      {...register("duration", { valueAsNumber: true })}
                       className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Duration (eg: 20)"
                     />
+                    {errors.duration && (
+                      <p className="text-red-500">{errors.duration.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -143,9 +161,15 @@ const EditWorkout = ({ data, setIsOpen }: PropsState) => {
                     <input
                       type="number"
                       id="calories"
+                      {...register("calories_burned", { valueAsNumber: true })}
                       className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       placeholder="Calories burned (eg: 250)"
                     />
+                    {errors.calories_burned && (
+                      <p className="text-red-500">
+                        {errors.calories_burned.message}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full">
                     <label
@@ -157,8 +181,12 @@ const EditWorkout = ({ data, setIsOpen }: PropsState) => {
                     <input
                       type="date"
                       id="date"
+                      {...register("date")}
                       className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
+                    {errors.date && (
+                      <p className="text-red-500">{errors.date.message}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -170,8 +198,12 @@ const EditWorkout = ({ data, setIsOpen }: PropsState) => {
                 >
                   Cancel
                 </button>
-                <button className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300 cursor-pointer">
-                  Save Changes
+                <button
+                  disabled={isPending}
+                  onClick={handleSubmit(onSubmit)}
+                  className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300 cursor-pointer"
+                >
+                  {isPending ? "Changes..." : "Save Changes"}
                 </button>
               </div>
             </div>

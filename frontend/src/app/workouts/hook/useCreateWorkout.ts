@@ -43,6 +43,7 @@ export const useCreateWorkout = () => {
       }
     },
   });
+
   const onSubmit = async (data: WorkoutDTO) => {
     await mutateAsync(data);
   };
