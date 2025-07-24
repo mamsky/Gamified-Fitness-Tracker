@@ -105,7 +105,8 @@ const WorkoutsPage = () => {
                 >
                   <span>{log.exercise_name}</span>
                   <span className="flex gap-4">
-                    {log.duration} Minutes <DropdownWorkout id={log.id} />
+                    {log.duration} Minutes{" "}
+                    <DropdownWorkout id={log.id} data={log} />
                   </span>
                 </li>
               ))
