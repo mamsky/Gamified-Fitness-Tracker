@@ -29,7 +29,7 @@ class authController {
       };
 
       await authService.createAuth(data);
-      sendSuccessResponse(res, 'Login successful');
+      sendSuccessResponse(res, 'Register Successfully');
     } catch (error) {
       next(error);
     }
@@ -54,7 +54,7 @@ class authController {
         expiresIn: '1d',
       });
 
-      sendSuccessResponse(res, 'Login successful', { token });
+      sendSuccessResponse(res, 'Login Successfully', { token });
     } catch (error) {
       next(error);
     }

@@ -27,7 +27,7 @@ class workoutController {
 
       const workout = await WorkoutService.findAll(idUser);
 
-      return sendSuccessResponse(res, 'Create Workout Successfully', workout);
+      return sendSuccessResponse(res, 'Get Workout Successfully', workout);
     } catch (error) {
       next(error);
     }

@@ -8,7 +8,12 @@ import profileRoutes from './api/profile/profile.routes';
 
 const app: Express = express();
 app.use(express.json());
-app.use(cors(corsOption));
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  }),
+);
 
 app.use('/api/auth', authRouter);
 app.use('/api', profileRoutes);
