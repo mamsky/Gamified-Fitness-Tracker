@@ -43,20 +43,7 @@ const WorkoutsPage = () => {
       <div className="max-w-4xl w-full p-6 bg-white/30 bg-opacity-10 backdrop-blur-3xl rounded-lg shadow-xl">
         <div className="flex justify-between ">
           <Link href={"/dashboard"} className="h-8 w-8">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-              />
-            </svg>
+            <img src="arrow.svg" alt="arrow left" />
           </Link>
           <div className="flex-1 text-white text-2xl sm:text-3xl font-bold mb-6 text-center">
             Workout History
